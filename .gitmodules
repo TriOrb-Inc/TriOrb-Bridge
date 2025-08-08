@@ -1,0 +1,6 @@
+[submodule "src/mqtt_client"]
+	path = src/mqtt_client
+	url = git@github.com:TriOrb-Inc/mqtt_client.git
+[submodule "src/TriOrb-ROS2-Types"]
+	path = src/TriOrb-ROS2-Types
+	url = git@github.com:TriOrb-Inc/TriOrb-ROS2-Types.git

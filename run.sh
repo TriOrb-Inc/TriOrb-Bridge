@@ -26,16 +26,23 @@ parser_definition() {
     param   ROS_PREFIX -r --ros init:="" -- "ROS topic prefix (Defaults to empty)"
     param   BRIDGE_CONFIG -c --config init:="./config/bridge.yaml" -- "Path to the bridge configuration file (Defaults to ./config/bridge.yaml)"
     param   IMAGE_TAG -t --tag init:="triorb/connecter:${VERSION}-$(uname -m)" -- "Tag for the Docker image (Defaults to triorb/connecter:${VERSION}-$(uname -m))"
-    param   INSTALL_DIR -d --dir init:="./install" -- "Directory to install the robot software (Defaults to ./install)"
+    param   INSTALL_DIR --dir init:="./install" -- "Directory to install the robot software (Defaults to ./install)"
     param   ROS_LOCALHOST_ONLY --localhost-only init:=1 -- "Set ROS_LOCALHOST_ONLY environment variable (Defaults to 1)"
     param   ROS_DOMAIN_ID --domain-id init:=0 -- "Set ROS_DOMAIN_ID environment variable (Defaults to 0)"
     param   NODE_NAME --node-name init:="mqtt_client" -- "Name of the ROS node (Defaults to mqtt_client)"
+    flag    BACKGROUND -d --detach init:=false -- "Run in background mode (Defaults to 0, which means foreground)"
     disp    :usage  -h --help
     disp    VERSION    --version
 }
 eval "$(getoptions parser_definition) exit 1"
 
-docker run -it --rm --name connector --ipc=host \
+if [ "${BACKGROUND}" != "false" ]; then
+    ARG_BACKGROUND="--detach"
+else
+    ARG_BACKGROUND=""
+fi
+
+docker run -it --rm ${ARG_BACKGROUND} --name connector-${ROBOT_IP} --ipc=host \
                 --add-host=localhost:127.0.1.1 \
                 -e ROS_LOCALHOST_ONLY=$ROS_LOCALHOST_ONLY \
                 -e ROS_DOMAIN_ID=$ROS_DOMAIN_ID \

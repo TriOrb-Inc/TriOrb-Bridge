@@ -42,7 +42,7 @@ else
     ARG_BACKGROUND=""
 fi
 
-docker run -it --rm ${ARG_BACKGROUND} --name connector-${ROBOT_IP} --ipc=host \
+docker run -it --rm ${ARG_BACKGROUND} --name connector-${ROBOT_IP} --ipc=host --net=host \
                 --add-host=localhost:127.0.1.1 \
                 -e ROS_LOCALHOST_ONLY=$ROS_LOCALHOST_ONLY \
                 -e ROS_DOMAIN_ID=$ROS_DOMAIN_ID \

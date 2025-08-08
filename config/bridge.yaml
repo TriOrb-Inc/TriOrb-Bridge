@@ -1,0 +1,104 @@
+/**/*:
+  ros__parameters:
+    bridge:
+      ros2mqtt:
+        ros_topics: 
+          - /drive/wakeup
+          - /drive/sleep
+          - /drive/pause
+          - /drive/restart
+          - /drive/stop
+
+        /drive/wakeup:
+          mqtt_topic: drive/wakeup
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /drive/sleep:
+          mqtt_topic: drive/sleep
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /drive/pause:
+          mqtt_topic: drive/pause
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /drive/restart:
+          mqtt_topic: drive/restart
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /drive/stop:
+          mqtt_topic: drive/stop
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+      
+
+      mqtt2ros:
+        mqtt_topics: 
+          - robot/status
+          - vslam/robot_pose
+
+        robot/status:
+          ros_topic: /robot/status
+          primitive: true
+          ros_type: triorb_static_interface/msg/RobotStatus
+          advanced:
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+
+        vslam/robot_pose:
+          ros_topic: /vslam/robot_pose
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbPos3
+          advanced:
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher

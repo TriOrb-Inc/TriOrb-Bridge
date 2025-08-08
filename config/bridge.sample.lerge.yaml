@@ -1,0 +1,896 @@
+/**/*:
+  ros__parameters:
+    broker:
+      host: localhost
+      port: 1883
+    bridge:
+      ros2mqtt:
+        ros_topics: 
+          - /ROS_PREFIX/robot/status
+          - /ROS_PREFIX/vslam/rig_tf
+          - /ROS_PREFIX/vslam/robot_pose
+          - /ROS_PREFIX/action/event
+          - /ROS_PREFIX/drive/result
+          - /ROS_PREFIX/robot/vel_level
+          - /ROS_PREFIX/run_slam/enable_camera
+          - /ROS_PREFIX/run_slam/map_file_path
+          - /ROS_PREFIX/run_slam/local_map_file_path
+          - /ROS_PREFIX/run_slam/map_freeze
+          - /ROS_PREFIX/run_slam/marker_only
+          - /ROS_PREFIX/run_slam/marker_exclude
+          - /ROS_PREFIX/run_slam/map_file_changed
+          - /ROS_PREFIX/lifter/result
+          - /ROS_PREFIX/run_slam/keyframe_landmarks
+          - /ROS_PREFIX/run_slam/matched_landmarks
+          - /ROS_PREFIX/ros2/pong
+          - /ROS_PREFIX/triorb/version/drive
+          - /ROS_PREFIX/triorb/version/pico
+          - /ROS_PREFIX/triorb/version/core
+          - /ROS_PREFIX/triorb/error/log
+          - /ROS_PREFIX/triorb/error/str/log
+          - /ROS_PREFIX/triorb/warn/log
+          - /ROS_PREFIX/triorb/warn/str/log
+          - /ROS_PREFIX/triorb/nav/state
+          - /ROS_PREFIX/nav/handling_task_csv_name
+          - /ROS_PREFIX/triorb/nav/result
+          - /ROS_PREFIX/tagslam/rig_tf
+          - /ROS_PREFIX/tagslam/tag_tf
+          - /ROS_PREFIX/tagslam/state
+
+        /ROS_PREFIX/robot/status:
+          mqtt_topic: MQTT_PREFIX/robot/status
+          primitive: true
+          ros_type: triorb_static_interface/msg/RobotStatus
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/vslam/rig_tf:
+          mqtt_topic: MQTT_PREFIX/vslam/rig_tf
+          primitive: true
+          ros_type: geometry_msgs/msg/TransformStamped
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/vslam/robot_pose:
+          mqtt_topic: MQTT_PREFIX/vslam/robot_pose
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbPos3
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/action/event:
+          mqtt_topic: MQTT_PREFIX/action/event
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # durability = サンプルが配信されることを保証
+                durability: volatile        # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+            mqtt:
+              qos: 2                # 2 = 確実に1回だけ配信する
+              retained: false       # false = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        /ROS_PREFIX/drive/result:
+          mqtt_topic: MQTT_PREFIX/drive/result
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbRunResult
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # durability = サンプルが配信されることを保証
+                durability: volatile        # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+            mqtt:
+              qos: 2                # 2 = 確実に1回だけ配信する
+              retained: false       # false = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /ROS_PREFIX/robot/vel_level:
+          mqtt_topic: MQTT_PREFIX/robot/vel_level
+          primitive: true
+          ros_type: std_msgs/msg/UInt8
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/enable_camera:
+          mqtt_topic: MQTT_PREFIX/run_slam/enable_camera
+          primitive: true
+          ros_type: std_msgs/msg/Int8MultiArray
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/map_file_path:
+          mqtt_topic: MQTT_PREFIX/run_slam/map_file_path
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/local_map_file_path:
+          mqtt_topic: MQTT_PREFIX/run_slam/local_map_file_path
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/map_freeze:
+          mqtt_topic: MQTT_PREFIX/run_slam/map_freeze
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/marker_only:
+          mqtt_topic: MQTT_PREFIX/run_slam/marker_only
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/marker_exclude:
+          mqtt_topic: MQTT_PREFIX/run_slam/marker_exclude
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+        
+        /ROS_PREFIX/run_slam/map_file_changed:
+          mqtt_topic: MQTT_PREFIX/run_slam/map_file_changed
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # durability = サンプルが配信されることを保証
+                durability: volatile        # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+            mqtt:
+              qos: 2                # 2 = 確実に1回だけ配信する
+              retained: false       # false = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /ROS_PREFIX/lifter/result:
+          mqtt_topic: MQTT_PREFIX/lifter/result
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # durability = サンプルが配信されることを保証
+                durability: volatile        # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+            mqtt:
+              qos: 2                # 2 = 確実に1回だけ配信する
+              retained: false       # false = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        /ROS_PREFIX/run_slam/keyframe_landmarks:
+          mqtt_topic: MQTT_PREFIX/run_slam/keyframe_landmarks
+          primitive: true
+          ros_type: triorb_slam_interface/msg/UInt32MultiArrayStamped
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/run_slam/matched_landmarks:
+          mqtt_topic: MQTT_PREFIX/run_slam/matched_landmarks
+          primitive: true
+          ros_type: triorb_slam_interface/msg/UInt32MultiArrayStamped
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/ros2/pong:
+          mqtt_topic: MQTT_PREFIX/ros2/pong
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/version/drive:
+          mqtt_topic: MQTT_PREFIX/triorb/version/drive
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/version/core:
+          mqtt_topic: MQTT_PREFIX/triorb/version/core
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/version/pico:
+          mqtt_topic: MQTT_PREFIX/triorb/version/pico
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/error/log:
+          mqtt_topic: MQTT_PREFIX/triorb/error/log
+          primitive: true
+          ros_type: std_msgs/msg/UInt16MultiArray
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/error/str/log:
+          mqtt_topic: MQTT_PREFIX/triorb/error/str/log
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/warn/log:
+          mqtt_topic: MQTT_PREFIX/triorb/warn/log
+          primitive: true
+          ros_type: std_msgs/msg/UInt16MultiArray
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/warn/str/log:
+          mqtt_topic: MQTT_PREFIX/triorb/warn/str/log
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/nav/state:
+          mqtt_topic: MQTT_PREFIX/triorb/nav/state
+          primitive: true
+          ros_type: std_msgs/msg/Int8MultiArray
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 2                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+        
+        /ROS_PREFIX/nav/handling_task_csv_name:
+          mqtt_topic: MQTT_PREFIX/nav/handling_task_csv_name
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 2                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/triorb/nav/result:
+          mqtt_topic: MQTT_PREFIX/triorb/nav/result
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: reliable    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 2                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/tagslam/rig_tf:
+          mqtt_topic: MQTT_PREFIX/tagslam/rig_tf
+          primitive: true
+          ros_type: geometry_msgs/msg/TransformStamped
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/tagslam/tag_tf:
+          mqtt_topic: MQTT_PREFIX/tagslam/tag_tf
+          primitive: true
+          ros_type: geometry_msgs/msg/TransformStamped
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+        /ROS_PREFIX/tagslam/state:
+          mqtt_topic: MQTT_PREFIX/tagslam/state
+          primitive: false
+          ros_type: std_msgs/msg/UInt8MultiArray
+          advanced:
+            ros:
+              queue_size: 1                 # [1] ROS subscriber queue size
+              qos:
+                reliability: best_effort    # [auto] One of "auto", "system_default", "reliable", "best_effort". If auto, the QoS is automatically determined via the publisher
+                durability: volatile        # [auto] One of "auto", "system_default", "volatile", "transient_local". If auto, the QoS is automatically determined via the publisher
+            mqtt:
+              qos: 0                # [0] MQTT QoS value
+              retained: false       # [false] whether to retain MQTT message
+
+
+      mqtt2ros:
+        mqtt_topics: 
+          - MQTT_PREFIX/drive/wakeup
+          - MQTT_PREFIX/drive/sleep
+          - MQTT_PREFIX/action/event
+          - MQTT_PREFIX/record/operate
+          - MQTT_PREFIX/drive/restart
+          - MQTT_PREFIX/drive/pause
+          - MQTT_PREFIX/drive/run_pos
+          - MQTT_PREFIX/drive/set_pos
+          - MQTT_PREFIX/drive/run_vel
+          - MQTT_PREFIX/drive/stop
+          - MQTT_PREFIX/set/robot/vel_level
+          - MQTT_PREFIX/run_slam/set/enable_camera
+          - MQTT_PREFIX/run_slam/set/change_map_file_path
+          - MQTT_PREFIX/run_slam/set/enter_local_map_file_path
+          - MQTT_PREFIX/run_slam/set/map_freeze
+          - MQTT_PREFIX/run_slam/set/marker_only
+          - MQTT_PREFIX/run_slam/set/marker_exclude
+          - MQTT_PREFIX/drive/run_lifter
+          - MQTT_PREFIX/ros2/ping
+          - vslam/joy
+          - MQTT_PREFIX/triorb/error/add
+          - MQTT_PREFIX/triorb/error/str/add
+          - MQTT_PREFIX/triorb/error/reset
+          - MQTT_PREFIX/nav/route_csv_name
+          - MQTT_PREFIX/nav/action
+          - MQTT_PREFIX/triorb/request_nav_state
+          - MQTT_PREFIX/path/navigate/set
+          - MQTT_PREFIX/tagslam/save/map
+          - MQTT_PREFIX/tagslam/load/map
+          - MQTT_PREFIX/tagslam/drive/set_pos
+          - MQTT_PREFIX/drive/save_waypoint
+          - MQTT_PREFIX/drive/set_life_time
+          - MQTT_PREFIX/sls/set/brake
+          - MQTT_PREFIX/sls/set/field
+
+        MQTT_PREFIX/drive/wakeup:
+          ros_topic: /ROS_PREFIX/drive/wakeup
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/sleep:
+          ros_topic: /ROS_PREFIX/drive/sleep
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/action/event:
+          ros_topic: /ROS_PREFIX/action/event
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/record/operate:
+          ros_topic: /ROS_PREFIX/record/operate
+          primitive: true
+          ros_type: std_msgs/msg/String
+        
+        MQTT_PREFIX/drive/restart:
+          ros_topic: /ROS_PREFIX/drive/restart
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/pause:
+          ros_topic: /ROS_PREFIX/drive/pause
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/run_pos:
+          ros_topic: /ROS_PREFIX/drive/run_pos
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbRunPos3
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+              
+        MQTT_PREFIX/drive/set_pos:
+          ros_topic: /ROS_PREFIX/drive/set_pos
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbSetPos3
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/run_vel:
+          ros_topic: /ROS_PREFIX/drive/run_vel
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbRunVel3
+          advanced:
+            mqtt:
+              qos: 0                        # 0 = 速度重視
+            ros:
+              qos:
+                reliability: best_effort    # best_effort だと配信されない. qos=0のため？
+                durability: volatile        # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/stop:
+          ros_topic: /ROS_PREFIX/drive/stop
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/set/robot/vel_level:
+          ros_topic: /ROS_PREFIX/set/robot/vel_level
+          primitive: true
+          ros_type: std_msgs/msg/UInt8
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/run_slam/set/enable_camera:
+          ros_topic: /ROS_PREFIX/run_slam/set/enable_camera
+          primitive: true
+          ros_type: std_msgs/msg/Int8MultiArray
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/run_slam/set/change_map_file_path:
+          ros_topic: /ROS_PREFIX/run_slam/set/change_map_file_path
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/run_slam/set/enter_local_map_file_path:
+          ros_topic: /ROS_PREFIX/run_slam/set/enter_local_map_file_path
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        MQTT_PREFIX/run_slam/set/map_freeze:
+          ros_topic: /ROS_PREFIX/run_slam/set/map_freeze
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/run_slam/set/marker_only:
+          ros_topic: /ROS_PREFIX/run_slam/set/marker_only
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/run_slam/set/marker_exclude:
+          ros_topic: /ROS_PREFIX/run_slam/set/marker_exclude
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/drive/run_lifter:
+          ros_topic: /ROS_PREFIX/drive/run_lifter
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        MQTT_PREFIX/ros2/ping:
+          ros_topic: /ROS_PREFIX/ros2/ping
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 0                    # 0 = 速度重視
+            ros:
+              qos:
+                reliability: best_effort   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        vslam/joy:
+          ros_topic: /ROS_PREFIX/vslam/joy
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 0                    # 0 = 速度重視
+            ros:
+              qos:
+                reliability: best_effort   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/triorb/error/add:
+          ros_topic: /ROS_PREFIX/triorb/error/add
+          primitive: true
+          ros_type: std_msgs/msg/UInt16MultiArray
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        MQTT_PREFIX/triorb/error/str/add:
+          ros_topic: /ROS_PREFIX/triorb/error/str/add
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        MQTT_PREFIX/triorb/error/reset:
+          ros_topic: /ROS_PREFIX/triorb/error/reset
+          primitive: true
+          ros_type: std_msgs/msg/UInt8
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/nav/route_csv_name:
+          ros_topic: /ROS_PREFIX/nav/route_csv_name
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+                
+        MQTT_PREFIX/nav/action:
+          ros_topic: /ROS_PREFIX/nav/action
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+              
+        MQTT_PREFIX/triorb/request_nav_state:
+          ros_topic: /ROS_PREFIX/triorb/request_nav_state
+          primitive: true
+          ros_type: std_msgs/msg/Empty
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+          
+        MQTT_PREFIX/path/navigate/set:
+          ros_topic: /ROS_PREFIX/path/navigate/set
+          primitive: true
+          ros_type: triorb_drive_interface/msg/Route
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/tagslam/save/map:
+          ros_topic: /ROS_PREFIX/tagslam/save/map
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/tagslam/load/map:
+          ros_topic: /ROS_PREFIX/tagslam/load/map
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/tagslam/drive/set_pos:
+          ros_topic: /ROS_PREFIX/tagslam/drive/set_pos
+          primitive: true
+          ros_type: triorb_drive_interface/msg/TriorbSetPos3
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+        
+        MQTT_PREFIX/drive/save_waypoint:
+          ros_topic: /ROS_PREFIX/drive/save_waypoint
+          primitive: true
+          ros_type: std_msgs/msg/String
+          advanced:
+            mqtt:
+              qos: 2
+            ros:
+              qos:
+                reliability: reliable
+                durability: volatile
+        MQTT_PREFIX/drive/set_life_time:
+          ros_topic: /ROS_PREFIX/drive/set_life_time
+          primitive: true
+          ros_type: std_msgs/msg/UInt16
+          advanced:
+            mqtt:
+              qos: 2
+            ros:
+              qos:
+                reliability: reliable
+                durability: volatile
+
+        MQTT_PREFIX/sls/set/brake:
+          ros_topic: /ROS_PREFIX/sls/set/brake
+          primitive: true
+          ros_type: std_msgs/msg/Bool
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない
+
+        MQTT_PREFIX/sls/set/field:
+          ros_topic: /ROS_PREFIX/sls/set/field
+          primitive: true
+          ros_type: std_msgs/msg/UInt8
+          advanced:
+            mqtt:
+              qos: 2                    # 2 = 確実に1回だけ配信する
+            ros:
+              qos:
+                reliability: reliable   # reliable = サンプルが配信されることを保証
+                durability: volatile    # volatile = 遅いタイミングでSubscribeした相手に配信するためのサンプルを保持しない

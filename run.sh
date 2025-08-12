@@ -30,32 +30,40 @@ parser_definition() {
     param   ROS_LOCALHOST_ONLY --localhost-only init:=1 -- "Set ROS_LOCALHOST_ONLY environment variable (Defaults to 1)"
     param   ROS_DOMAIN_ID --domain-id init:=0 -- "Set ROS_DOMAIN_ID environment variable (Defaults to 0)"
     param   NODE_NAME --node-name init:="mqtt_client" -- "Name of the ROS node (Defaults to mqtt_client)"
-    flag    BACKGROUND -d --detach init:=false -- "Run in background mode (Defaults to 0, which means foreground)"
+    param   CONTAINER_NAME --container-name init:="connector" -- "Name of the Docker container (Defaults to connector)"
     disp    :usage  -h --help
     disp    VERSION    --version
 }
 eval "$(getoptions parser_definition) exit 1"
 
-if [ "${BACKGROUND}" != "false" ]; then
-    ARG_BACKGROUND="--detach"
+docker ps | grep ${CONTAINER_NAME} > /dev/null
+if [ $? -ne 0 ]; then
+    docker run -it --rm -d --name ${CONTAINER_NAME} --ipc=host --net=host \
+                    --add-host=localhost:127.0.1.1 \
+                    -e ROS_LOCALHOST_ONLY=$ROS_LOCALHOST_ONLY \
+                    -e ROS_DOMAIN_ID=$ROS_DOMAIN_ID \
+                    -v ${INSTALL_DIR}:/install \
+                    -v $(pwd):/ws \
+                    -w /ws \
+                    ${IMAGE_TAG} /bin/bash
+    echo "${CONTAINER_NAME} container started in background."
+    sleep 1
 else
-    ARG_BACKGROUND=""
+    echo "${CONTAINER_NAME} container is already running."
 fi
 
-docker run -it --rm ${ARG_BACKGROUND} --name connector-${ROBOT_IP} --ipc=host --net=host \
-                --add-host=localhost:127.0.1.1 \
-                -e ROS_LOCALHOST_ONLY=$ROS_LOCALHOST_ONLY \
-                -e ROS_DOMAIN_ID=$ROS_DOMAIN_ID \
-                -e ROBOT_IP="$ROBOT_IP" \
-                -e MQTT_PORT="$MQTT_PORT" \
-                -e MQTT_PREFIX="$MQTT_PREFIX" \
-                -e ROS_PREFIX="$ROS_PREFIX" \
-                -e BRIDGE_CONFIG="$BRIDGE_CONFIG" \
-                -v ${INSTALL_DIR}:/install \
-                -v $(pwd):/ws \
-                -w /ws \
-                ${IMAGE_TAG} /bin/bash -c '\
-                source /install/setup.bash && \
-                [ -z "${MQTT_PREFIX}" ] && ARG_MQTT_PREFIX="" || ARG_MQTT_PREFIX="prefix_mqtt:=\"${MQTT_PREFIX}\"" && \
-                [ -z "${ROS_PREFIX}" ] && ARG_ROS_PREFIX="" || ARG_ROS_PREFIX="prefix_ros:=\"${ROS_PREFIX}\"" && \
-                ros2 launch mqtt_client connect.launch.ros2.xml params_file:=$(realpath "${BRIDGE_CONFIG}") broker_host:=${ROBOT_IP} broker_port:=${MQTT_PORT} ${ARG_MQTT_PREFIX} ${ARG_ROS_PREFIX}'
+
+TMUX_NAME=${ROS_PREFIX/'/'/''}_$(echo "$ROBOT_IP" | sed 's/\./_/g')
+docker exec connector tmux ls | grep ${TMUX_NAME} > /dev/null
+if [ $? -eq 0 ]; then
+    docker exec -it ${CONTAINER_NAME} tmux kill-session -t ${TMUX_NAME}
+    echo "Killed existing tmux session: ${TMUX_NAME}"
+    sleep 1
+fi
+docker exec -it ${CONTAINER_NAME} tmux new-session -s ${TMUX_NAME} -d "\
+    source /install/setup.bash && \
+    echo \"Starting ROS bridge with robot IP: ${ROBOT_IP}, MQTT port: ${MQTT_PORT}, MQTT prefix: ${MQTT_PREFIX}, ROS prefix: ${ROS_PREFIX}\" && \
+    ros2 launch mqtt_client connect.launch.ros2.xml params_file:=${BRIDGE_CONFIG} broker_host:=${ROBOT_IP} broker_port:=${MQTT_PORT} prefix_mqtt:=\'${MQTT_PREFIX}\' prefix_ros:=\'${ROS_PREFIX}\' ; \
+    /bin/bash"
+echo "Started tmux session: ${TMUX_NAME} in container: ${CONTAINER_NAME}"
+echo "ROS bridge with robot IP: ${ROBOT_IP}, MQTT port: ${MQTT_PORT}, MQTT prefix: ${MQTT_PREFIX}, ROS prefix: ${ROS_PREFIX}"

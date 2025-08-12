@@ -20,7 +20,9 @@ RUN apt install -y \
     python3-pip \
     python3-colcon-common-extensions \
     python3-rosdep \
-    python3-vcstool
+    python3-vcstool \
+    tmux \
+    nano
 
 # Install Paho MQTT
 RUN apt install -y libpaho-mqtt-dev libpaho-mqttpp-dev nlohmann-json3-dev
@@ -31,7 +33,7 @@ RUN git checkout v1.5.2
 RUN git submodule init && git submodule update
 RUN cmake -Bbuild -H. -DPAHO_WITH_MQTT_C=ON -DPAHO_BUILD_EXAMPLES=ON -DPAHO_WITH_SSL=ON &&\
     cmake --build build/ --target install
-#RUN rm -rf /tmp/paho.mqtt.cpp
+RUN rm -rf /tmp/paho.mqtt.cpp
 RUN python3 -m pip install paho-mqtt
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH

@@ -23,6 +23,7 @@ parser_definition() {
     param   DOCKER_FILE -f --file init:="./docker/Dockerfile" -- "Path to the Dockerfile (Defaults to ./docker/Dockerfile)"
     param   IMAGE_TAG -t --tag init:="triorb/connecter:${VERSION}-$(uname -m)" -- "Tag for the Docker image (Defaults to triorb/connecter:${VERSION}-$(uname -m))"
     param   INSTALL_DIR -d --dir init:="./install" -- "Directory to install the robot software (Defaults to ./install)"
+    param   BUILD_TYPE --build-type init:="Release" -- "Build type for the ROS packages (Defaults to Release)"
     disp    :usage  -h --help
     disp    VERSION    --version
 }
@@ -39,8 +40,9 @@ echo "Docker image built successfully: $IMAGE_TAG"
 echo "Building ROS packages and installing to $INSTALL_DIR"
 mkdir -p "$INSTALL_DIR"
 docker run -it --rm --name build-connector \
+                -v BUILD_TYPE=${BUILD_TYPE} \
                 -v ${INSTALL_DIR}:/install \
                 -v $(pwd):/ws \
                 -w /ws \
                 ${IMAGE_TAG} /bin/bash -c '\
-                colcon build --install-base /install --base-paths ./src'
+                colcon build --cmake-args -DCMAKE_BUILD_TYPE=${BUILD_TYPE} --install-base /install --base-paths ./src'
